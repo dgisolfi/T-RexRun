@@ -32,7 +32,11 @@ pygame.draw.line(
             (game_width, 
             (game_height/2 + player_height))
         )
+game_font = pygame.font.SysFont('monospace', 20)
 
 playerIMG = pygame.image.load('./imgs/dino.png')
 playerIMG_right = pygame.image.load('./imgs/dino_right_foot_up.png')
 playerIMG_left = pygame.image.load('./imgs/dino_left_foot_up.png')
+
+cactusIMG_normal = pygame.image.load('./imgs/cactus.png')
+cactusIMG_flipped = pygame.image.load('./imgs/cactus_flipped.png')
