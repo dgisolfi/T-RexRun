@@ -1,4 +1,4 @@
-0# !/usr/bin/python3
+# !/usr/bin/python3
 # 2018-12-23
 
 import pygame
@@ -32,7 +32,7 @@ pygame.draw.line(
             (game_width, 
             (game_height/2 + player_height))
         )
-game_font = pygame.font.SysFont('monospace', 20)
+font = pygame.font.Font(None, 36)
 
 playerIMG = pygame.image.load('./imgs/dino.png')
 playerIMG_right = pygame.image.load('./imgs/dino_right_foot_up.png')
@@ -40,3 +40,6 @@ playerIMG_left = pygame.image.load('./imgs/dino_left_foot_up.png')
 
 cactusIMG_normal = pygame.image.load('./imgs/cactus.png')
 cactusIMG_flipped = pygame.image.load('./imgs/cactus_flipped.png')
+
+birdIMG_Down = pygame.image.load('./imgs/bird.png')
+birdIMG_Up = pygame.image.load('./imgs/bird_up.png')
