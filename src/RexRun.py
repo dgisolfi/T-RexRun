@@ -13,17 +13,19 @@ class RexRun:
         # Initialize all Objects
         self.player = Player(black, player_width, player_height, 0, 0)
         self.cactus = Obstacle('cactus', 'normal', black, 0, 0, 11, 27, 800)
-        self.cactus_flipped = Obstacle('cactus', 'flipped', black, 0, 0, 11, 27, 1000)
-        self.bird_low = Bird('bird', 'normal', black, 0, 0, 20, 14, 1200, y_val=(game_height/1.70))
-        # self.bird_high = Bird()
+        self.cactus_flipped = Obstacle('cactus', 'flipped', black, 0, 0, 11, 27, 1200)
+        self.bird_low = Bird('bird', 'normal', black, 0, 0, 20, 14, 1000, y_val=(game_height/1.70))
+        self.bird_high = Bird('bird', 'normal', black, 0, 0, 20, 14, 1400, y_val=(game_height/1.69))
 
 
     def upDifficulty(self):
         self.cactus.speed += self.difficulty
         self.cactus_flipped.speed += self.difficulty
+        self.bird_low.speed += self.difficulty
+        self.bird_high.speed += self.difficulty
 
     def gameOver(self):
-        # self.__init__()
+
         screen.fill(white)
         text = font.render('Game Over', True, black)
         text_rect = text.get_rect()
@@ -36,6 +38,8 @@ class RexRun:
         text_x = screen.get_width() / 1.5 - text_rect.width / 1.5
         text_y = screen.get_height() / 1.5 - text_rect.height / 1.5
         screen.blit(text, [text_x, text_y])
+
+        self.isRunning = False
         pygame.display.update()
 
     def draw(self):
@@ -63,22 +67,23 @@ class RexRun:
         if self.bird_low.update(self.player):
             self.gameOver()
 
-        if self.isPower(self.player.score):
+        if self.player.score % 100 == 0:
             print(self.player.score)
+            self.upDifficulty()
+            self.difficulty += 1/2
         # Update Display
         pygame.display.update()
         clock.tick(60)
 
-    def isPower(self , n):
-        if not n == int(n):
+    def isPowerOfTwo(self, n): 
+        if (n == 0): 
             return False
-        n = int(n)
-        if n == 1:
-            return True
-        elif n > 2:
-            return self.isPower(n/2)
-        else:
-            return False
+        while (n != 1): 
+                if (n % 2 != 0): 
+                    return False
+                n = n // 2
+        return True
+  
 
     def main(self):
         while self.isRunning:

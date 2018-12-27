@@ -23,13 +23,13 @@ class Bird(Obstacle):
 
         if self.state == 'down':
             screen.blit(birdIMG_Up, (self.X, self.Y))
-            if self.tick == 5:
+            if self.tick == 8:
                 self.state = 'up'
                 self.tick = 0 
 
         elif self.state == 'up':
             screen.blit(birdIMG_Down, (self.X, self.Y))
-            if self.tick == 5:
+            if self.tick == 8:
                 self.state = 'down'
                 self.tick = 0 
 
