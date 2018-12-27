@@ -10,6 +10,8 @@ class RexRun:
     def __init__(self):
         self.isRunning = True
         self.difficulty = 0
+        self.FPS = 60
+        self.GameOver = False
         # Initialize all Objects
         self.player = Player(black, player_width, player_height, 0, 0)
         self.cactus = Obstacle('cactus', 'normal', black, 0, 0, 11, 27, 800)
@@ -25,7 +27,6 @@ class RexRun:
         self.bird_high.speed += self.difficulty
 
     def gameOver(self):
-
         screen.fill(white)
         text = font.render('Game Over', True, black)
         text_rect = text.get_rect()
@@ -35,12 +36,23 @@ class RexRun:
 
         text = font.render('Press Up or Down Key to Play Again', True, black)
         text_rect = text.get_rect()
-        text_x = screen.get_width() / 1.5 - text_rect.width / 1.5
+        text_x = screen.get_width() /2 - text_rect.width/2
         text_y = screen.get_height() / 1.5 - text_rect.height / 1.5
         screen.blit(text, [text_x, text_y])
-
-        self.isRunning = False
         pygame.display.update()
+        waiting = True
+        while waiting:
+            clock.tick(self.FPS)
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    print("QUIT")
+                    pygame.quit()
+                    self.isRunning = False
+                    quit()
+
+                if event.type == pygame.KEYUP:
+                    waiting = False
+                    self.__init__()
 
     def draw(self):
         screen.fill(white)
@@ -53,40 +65,36 @@ class RexRun:
         )
 
         # Update Score
-        score = font.render('Score {0}'.format(self.player.score), 1, black)
+        score = font.render(f'Score {self.player.score}', 1, black)
         screen.blit(score, (5, 10))
-        self.player.score += 1
+        self.player.score += (1/2)
 
         # Update Objects
         self.player.update()
         if self.cactus.update(self.player):
-            self.gameOver()
+            self.GameOver = True
+
         if self.cactus_flipped.update(self.player):
-            self.gameOver()
+            self.GameOver = True
 
         if self.bird_low.update(self.player):
-            self.gameOver()
+            self.GameOver = True
+        
+        if self.bird_high.update(self.player):
+            self.GameOver = True
 
-        if self.player.score % 100 == 0:
+        if self.player.score % 500 == 0:
             print(self.player.score)
             self.upDifficulty()
-            self.difficulty += 1/2
+            self.difficulty += 1
         # Update Display
         pygame.display.update()
-        clock.tick(60)
-
-    def isPowerOfTwo(self, n): 
-        if (n == 0): 
-            return False
-        while (n != 1): 
-                if (n % 2 != 0): 
-                    return False
-                n = n // 2
-        return True
-  
+        clock.tick(self.FPS)
 
     def main(self):
         while self.isRunning:
+            if self.GameOver:
+                self.gameOver()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     print("QUIT")
